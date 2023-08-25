@@ -4,6 +4,7 @@ const valid2 = [5, 5, 3, 5, 7, 6, 6, 7, 6, 8, 7, 5, 1, 4, 3, 9]
 const valid3 = [3, 7, 1, 6, 1, 2, 0, 1, 9, 9, 8, 5, 2, 3, 6]
 const valid4 = [6, 0, 1, 1, 1, 4, 4, 3, 4, 0, 6, 8, 2, 9, 0, 5]
 const valid5 = [4, 5, 3, 9, 4, 0, 4, 9, 6, 7, 8, 6, 9, 6, 6, 6]
+const valid6 = [4, 5, 3, 9, 6, 8, 9, 8, 8, 7, 7, 0, 5, 7, 9, 8]
 
 // All invalid credit card numbers
 const invalid1 = [4, 5, 3, 2, 7, 7, 8, 7, 7, 1, 0, 9, 1, 7, 9, 5]
@@ -24,8 +25,84 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 
 // Add your functions below:
+function validateCred(card){
+    card.reverse();
+    let total = card[0];
+    //console.log(total);
+    for(let i = 1; i < card.length; i++){
+       if(i % 2 === 0){
+          total += card[i];
+          //console.log(total);
+       }else {
+          let j = card[i] * 2;
+          if(j > 9){
+            total += (j - 9);
+          }else {
+            total += j;
+          }
+           
+           //console.log(total);
+       }
+    }
+    total = total % 10;
+    if(total === 0){
+        return true;
+    }else {
+        return false;
+    }
+}
 
+function findInvalidCards(arrays){
+    let invalidCard = [];
+    for(let i = 0; i < arrays.length; i++){
+        let bool = validateCred(arrays[i]);
+        if(bool === false){
+            invalidCard.push(arrays[i]);
+        }
+    }
+     return invalidCard;
+}
 
+function idInvalidCardCompanies(invalidCards){
+    let invalidCompany = [];
+
+   for(let i = 0; i < invalidCards.length; i++){
+    let index = invalidCards[i][0];
+       switch(index){
+        case 3: 
+          let strContain = index + ' Amex (American Express)';
+           if(!invalidCompany.includes(strContain)){
+            invalidCompany.push(index + ' Amex (American Express)');
+           }
+          break;
+        case 4:
+            let strContain1 = index + ' Visa';
+            if(!invalidCompany.includes(strContain1)){
+                invalidCompany.push(index + ' Visa');
+               }
+              break;
+        case 5:
+            let strContain2 = index + ' Mastercard';
+            if(!invalidCompany.includes(strContain2)){
+                invalidCompany.push(index + ' Mastercard');
+               }
+              break;
+        case 6:
+            let strContain3 = index + ' Discover';
+            if(!invalidCompany.includes(strContain3)){
+                invalidCompany.push(index + ' Discover');
+               }
+              break;
+
+       }
+   }
+   return invalidCompany;
+}
+
+const invalidCompanies = findInvalidCards(batch);
+console.log(idInvalidCardCompanies(invalidCompanies));
+
+console.log(validateCred(mystery5));
 
 
 
